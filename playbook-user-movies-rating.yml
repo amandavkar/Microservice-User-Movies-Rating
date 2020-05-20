@@ -1,0 +1,14 @@
+---
+- name: create service for deployment
+  hosts: kubemaster
+  become: true
+
+  tasks:
+  - name: Copying kube file to kubemaster
+    copy: src=movie-catelog-service.yml dest=/home/kube/movie-catelog-service.yml
+  
+  - name: create a service
+    become: true
+    become_user: kube
+    command: kubectl apply -f /home/kube/movie-catelog-service.yml
+
