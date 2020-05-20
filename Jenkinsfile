@@ -58,6 +58,8 @@ pipeline {
 	stage('Copy deployment and service YAML files to Kubernetes master') {
 	  steps{
 	      sh "scp -r user-movies-rating.yml vagrant@k8s-master:/home/vagrant"
+	      sh "scp -r mysql-deployment.yml vagrant@k8s-master:/home/vagrant"
+	      sh "scp -r zipkin.yml vagrant@k8s-master:/home/vagrant"
 	  }
 	}
 	
@@ -65,6 +67,8 @@ pipeline {
 	stage('Execute Ansible playbook to deploy service in Kubernetes') {
 	  steps{
 		ansiblePlaybook installation: 'Ansible', inventory: '/etc/ansible/hosts', playbook: 'playbook-user-movies-rating.yml'
+		ansiblePlaybook installation: 'Ansible', inventory: '/etc/ansible/hosts', playbook: 'playbook-mysql-server.yml'
+		ansiblePlaybook installation: 'Ansible', inventory: '/etc/ansible/hosts', playbook: 'playbook-zipkin.yml'
 	  }
 	}
   }

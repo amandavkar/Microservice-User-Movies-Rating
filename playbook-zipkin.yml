@@ -5,10 +5,10 @@
 
   tasks:
   - name: Copying kube file to kubemaster
-    copy: src=user-movies-rating.yml dest=/home/vagrant/user-movies-rating.yml
+    copy: src=zipkin.yml dest=/home/vagrant/zipkin.yml
   
   - name: create a service
     become: true
     become_user: vagrant
-    command: kubectl apply -f /home/vagrant/user-movies-rating.yml
+    command: kubectl apply -f /home/vagrant/zipkin.yml
 

@@ -1,0 +1,14 @@
+---
+- name: Create pods using deployment and service 
+  hosts: kubemaster
+  become: true
+
+  tasks:
+  - name: Copying kube file to kubemaster
+    copy: src=mysql-deployment.yml dest=/home/vagrant/mysql-deployment.yml
+    
+  - name: execute mysql deployment
+    become: true
+    become_user: vagrant 
+    command: kubectl apply -f /home/vagrant/mysql-deployment.yml
+

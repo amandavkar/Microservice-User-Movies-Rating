@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: PersistentVolume            # Create a PersistentVolume
+metadata:
+  name: pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: standard      # Storage class. A PV Claim requesting the same storageClass can be bound to this volume. 
+  capacity:
+    storage: 4Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:                       # hostPath PersistentVolume is used for development and testing. It uses a file/directory on the Node to emulate network-attached storage
+    path: "/var/lib/mysql"
+  persistentVolumeReclaimPolicy: Retain  # Retain the PersistentVolume even after PersistentVolumeClaim is deleted. The volume is considered “released”. But it is not yet available for another claim because the previous claimant’s data remains on the volume.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: ratingdata
+spec:
+  storageClassName: standard       # Request a certain storage class
+  accessModes:
+    - ReadWriteOnce                # ReadWriteOnce means the volume can be mounted as read-write by a single Node
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ratingdata-mysql          # Name of the resource
+  labels:                         # Labels that will be applied to the resource
+    app: ratingdata-mysql
+spec:
+  selector:                       # Selects any Pod with labels `app=ratingdata,tier=mysql`
+    app: ratingdata-mysql
+    tier: mysql
+  type: NodePort
+  ports:
+  - port: 3306
+    targetPort: 3306
+    protocol: TCP
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment                    # Type of the kubernetes resource
+metadata:
+  name: ratingdata-mysql            # Name of the deployment
+  labels:                           # Labels applied to this deployment
+    app: ratingdata-mysql
+spec:
+  selector:
+    matchLabels:                    # This deployment applies to the Pods matching the specified labels
+      app: ratingdata-mysql
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:                         # Template for the Pods in this deployment
+    metadata:
+      labels:                       # Labels to be applied to the Pods in this deployment
+        app: ratingdata-mysql
+        tier: mysql
+    spec:                           # The spec for the containers that will be run inside the Pods in this deployment
+      containers:
+      - image: mysql                # The container image
+        name: mysql
+        env:                        # Environment variables passed to the container
+        - name: MYSQL_ROOT_PASSWORD
+          value: ishita
+        - name: MYSQL_DATABASE
+          value: test
+        - name: MYSQL_USER
+          value: atul
+        - name: MYSQL_PASSWORD
+          value: atul
+        ports:
+        - containerPort: 3306        # The port that the container exposes 
+          name: mysql
+        volumeMounts:                
+        - name: mysql-persistent-storage   # This name should match the name specified in `volumes.name`
+          mountPath: /var/lib/mysql
+      volumes:                       # A PersistentVolume is mounted as a volume to the Pod  
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+
