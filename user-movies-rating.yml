@@ -1,24 +1,24 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: ratingdata     # Name of the kubernetes resource
+  name: usermoviesrating     # Name of the kubernetes resource
   labels:                     # Labels that will be applied to this resource
-    app: ratingdata
+    app: usermoviesrating
 spec:
   replicas: 1                   # tells deployment to run 1 pod matching the template
   selector:
     matchLabels:                # The deployment applies to any pods mayching the specified labels
-      app: ratingdata
+      app: usermoviesrating
 
   template:                     # Template for creating the pods in this deployment
     metadata:
       labels:                   # Labels that will be applied to each Pod in this deployment
-        app: ratingdata
+        app: usermoviesrating
 
     spec:                       # Spec for the containers that will be run in the Pods
       containers:
-      - name: ratingdata
-        image: amandavkar/rating-data-service
+      - name: usermoviesrating
+        image: amandavkar/user-movies-rating
         imagePullPolicy: Always
         ports:
           - containerPort: 8081
@@ -27,13 +27,13 @@ apiVersion: v1
 kind: Service
 
 metadata:
-  name: ratingdata
+  name: usermoviesrating
   labels:
-    app: ratingdata
+    app: usermoviesrating
 
 spec:
   selector:
-    app: ratingdata
+    app: usermoviesrating
   type: NodePort # Can use type as LoadBalancer if more than 1 replica
   ports:
   - port: 8081

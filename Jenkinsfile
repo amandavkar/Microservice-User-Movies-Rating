@@ -16,7 +16,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/amandavkar/Microservices-Movie-Catelog-Service.git'
+        git 'https://github.com/amandavkar/Microservice-User-Movies-Rating.git'
       }
     }
 	  
@@ -57,7 +57,7 @@ pipeline {
 	
 	stage('Copy deployment and service YAML files to Kubernetes master') {
 	  steps{
-	      sh "scp -r user-movies-rating.yml vagrant@kubernetes-master:/home/vagrant"
+	      sh "scp -r user-movies-rating.yml vagrant@k8s-master:/home/vagrant"
 	  }
 	}
 	
