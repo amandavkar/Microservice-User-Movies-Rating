@@ -19,7 +19,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
   labels:
-    app: ratingdata
+    app: mysql
 spec:
   storageClassName: standard       # Request a certain storage class
   accessModes:
@@ -31,13 +31,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ratingdata-mysql          # Name of the resource
+  name: mysql          # Name of the resource
   labels:                         # Labels that will be applied to the resource
-    app: ratingdata-mysql
+    app: mysql
     tier: database
 spec:
   selector:                       # Selects any Pod with labels `app=ratingdata,tier=database`
-    app: ratingdata-mysql
+    app: mysql
     tier: database
   clusterIP: None
   ports:
@@ -47,27 +47,28 @@ spec:
 apiVersion: apps/v1            # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment                    # Type of the kubernetes resource
 metadata:
-  name: ratingdata-mysql            # Name of the deployment
+  name: mysql            # Name of the deployment
   labels:                           # Labels applied to this deployment
-    app: ratingdata-mysql
+    app: mysql
     tier: database
 spec:
   selector:                       # Selects any Pod with labels `app=ratingdata,tier=database`
-    app: ratingdata-mysql
-    tier: database
+    matchLabels:
+      app: mysql
+      tier: database
   strategy:
     type: Recreate
   template:                         # Template for the Pods in this deployment
     metadata:
       labels:                       # Labels to be applied to the Pods in this deployment
-        app: ratingdata-mysql
+        app: mysql
         tier: database
     spec:                           # The spec for the containers that will be run inside the Pods in this deployment
       containers:
       - image: mysql:5.7                 # The container image
         args:
           - "--ignore-db-dir=lost+found" # Workaround for https://github.com/docker-library/mysql/issues/186
-        name: ratingdata-mysql
+        name: mysql
         env:                        # Environment variables passed to the container
         - name: MYSQL_ROOT_PASSWORD
           value: ishita
@@ -79,7 +80,7 @@ spec:
           value: atul
         ports:
         - containerPort: 3306        # The port that the container exposes 
-          name: ratingdata-mysql
+          name: mysql
         volumeMounts:                
         - name: mysql-persistent-storage   # This name should match the name specified in `volumes.name`
           mountPath: /var/lib/mysql
