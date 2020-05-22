@@ -67,7 +67,7 @@ public class UserMovieRatingService {
 	}
 	
 	public MovieRating getMovieRatings(Moviesbyuser moviesbyuser) {
-		Movie mv = restTemplate.getForObject("http://localhost:8082/movieinfo/movieid/"+moviesbyuser.getmovieid(), Movie.class);
+		Movie mv = restTemplate.getForObject("http://movieinfo:8082/movieinfo/movieid/"+moviesbyuser.getmovieid(), Movie.class);
 		return new MovieRating(mv, moviesbyuser.getRating());
 	}
 }
