@@ -1,5 +1,6 @@
 package com.atul.usermovierating.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,12 +47,16 @@ public class UserMovieRatingService {
 		
 		//Get the user name from user table
 		User username = userDAO.findById(userid).orElse(new User());
+		System.out.println(username.toString());
 		usermovierating.setUsername(username.getName());
 		
 		
 		// Get list of movies and ratings for a user
 		// List<MoviesByUser> movielist = (List<MoviesByUser>) userMoviesDAO.findMoviesByUser_id(userid);
 		List<Moviesbyuser> movielist = (List<Moviesbyuser>) userMoviesDAO.findAllByUserid(userid);
+	      Iterator<Moviesbyuser> iterator = movielist.iterator();
+	      while(iterator.hasNext()) {
+	         System.out.println(iterator.next().toString());}
 		
 		List<MovieRating> mr =  movielist.stream()
 				.map(usermovie -> this.getMovieRatings(usermovie))

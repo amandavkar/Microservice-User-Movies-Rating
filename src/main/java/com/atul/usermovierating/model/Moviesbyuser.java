@@ -10,10 +10,6 @@ import javax.persistence.Id;
 @Entity
 public class Moviesbyuser  implements Serializable {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2107545420082366913L;
 	@Id @GeneratedValue  @Column(nullable = false)
 	int id;
 	

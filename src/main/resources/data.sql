@@ -1,0 +1,16 @@
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('1', '101', 'tt0111161', '5');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('2', '101', 'tt0068646', '4');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('3', '101', 'tt0468569', '3');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('4', '102', 'tt0050083', '2');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('5', '102', 'tt0108052', '1');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('6', '103', 'tt0137523', '4');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('7', '103', 'tt0111161', '2');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('8', '104', 'tt0133093', '5');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('9', '104', 'tt0050083', '3');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('10', '105', 'tt0099685', '2');
+INSERT INTO movies.moviesbyuser (id, userid, movieid, rating) VALUES ('11', '102', 'tt0468569', '1');
+INSERT INTO movies.user (userid, name) VALUES ('101', 'Yash');
+INSERT INTO movies.user (userid, name) VALUES ('102', 'Ishita');
+INSERT INTO movies.user (userid, name) VALUES ('103', 'Atul');
+INSERT INTO movies.user (userid, name) VALUES ('104', 'Vandana');
+INSERT INTO movies.user (userid, name) VALUES ('105', 'Hitesh');
